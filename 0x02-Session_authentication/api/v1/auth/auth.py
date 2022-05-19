@@ -47,4 +47,3 @@ class Auth:
             if cookie_name:
                 return request.cookies.get(cookie_name)
         return None
-
