@@ -6,6 +6,7 @@ from api.v1.views import app_views
 from models.user import User
 import os
 
+
 @app_views.route('/auth_session/login', methods=['POST'], strict_slashes=False)
 def all_sess_routes() -> str:
     """Handle all session login
@@ -15,11 +16,11 @@ def all_sess_routes() -> str:
     if email is None:
         return jsonify({"error": "email missing"}), 400
     if password is None:
-        return jsonify({ "error": "password missing" }), 400
+        return jsonify({"error": "password missing"}), 400
     try:
         users = User.search({"email": email})
     except Exception as e:
-        return jsonify({ "error": "no user found for this email" }), 404
+        return jsonify({"error": "no user found for this email"}), 404
     if users is not None:
         for user in users:
             if user.is_valid_password(password):  # handle else
@@ -32,7 +33,7 @@ def all_sess_routes() -> str:
                 return res
             else:
                 return jsonify({"error": "wrong password"}), 401
-    return jsonify({ "error": "no user found for this email" }), 404
+    return jsonify({"error": "no user found for this email"}), 404
 
 
 @app_views.route("/auth_session/logout", methods=['DELETE'],
@@ -44,4 +45,3 @@ def remove_session():
     if auth.destroy_session(request):
         return jsonify({}), 200
     abort(404)
-
